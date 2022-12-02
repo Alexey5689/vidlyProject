@@ -1,0 +1,105 @@
+
+.head_color{
+    background-color: rgba(161, 68, 59, 1);
+}
+.size{
+    height: 200px;
+    background-color: gray;
+}
+.img_Head_Entrance{
+  display:flex;
+  border: none;
+  background-color: transparent;
+  font-family:'Roboto';
+ 
+}
+.image{
+  background-image: url(bx-user.svg);
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+}
+
+button a{
+  display:flex;
+  color:white;
+  text-decoration: none;
+  align-items: center;
+}
+a:hover,
+a:focus{
+  color:white;
+}
+
+#wrap{
+  width: 100%;
+  height: 30px;
+  padding: 0;
+  position:relative;
+  display: inline-block;
+  
+}
+.srch_inp{
+  display: inline-block;
+  position: absolute;
+  width: 0px;
+  top: 0;
+  right: 0;
+  border: none;
+  outline: none;
+  background: none;
+  padding-right: 32px;
+  background: none;
+  z-index: 3;
+  transition: width 1s cubic-bezier(0.000, 0.795, 0.000, 1.000);
+  cursor: pointer;
+  color:white; 
+  
+
+}
+.srch_inp:focus {
+  width: 80%;
+  z-index: 1;
+  cursor: text;
+}
+.srch_inp::placeholder{
+  color:white;
+}
+
+input[type="submit"]{
+  position: absolute;
+  width: 32px;
+  height: 30px;
+  background-image: url(serchVector.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  background-color:transparent;
+  border:none;
+  cursor: pointer;
+  transition: opacity .4s ease;
+}
+input[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+
+.logo_img{
+  background-image: url(logo.svg);
+  background-repeat: no-repeat;
+  width: 136px;
+  height: 32px;
+}
+nav {
+  font-family:'Open_sans';
+  font-size: 20px;
+  font-weight: 500;
+  
+}
+.colorHead{
+  color:rgba(161, 68, 59, 1);
+  
+}

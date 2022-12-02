@@ -1,0 +1,59 @@
+.colorFoot{
+    background-color:rgba(165, 165, 165, 0.3);
+}
+.font{
+    font-family: 'Open_Sans';
+    color:rgba(161, 68, 59, 1);
+    font-weight: 600;
+}
+
+.margin{
+    margin-right: 5%;
+}
+.img{
+    background-repeat: no-repeat;
+    width: 37px;
+    height: 37px;
+    transition:  background-image 1s ease;
+}
+
+.you{
+   background-image: url(bxl-youtube.svg); 
+}
+.you:hover,
+.you:focus{
+    background-image: url(blackyoutube.svg);
+}
+
+
+.snap{
+    background-image: url(bxl-snapchat.svg);
+}
+.snap:hover,
+.snap:focus{
+    background-image: url(blacksnapchat.svg);
+}
+
+.tel{
+    background-image: url(bxl-telegram.svg);
+}
+.tel:hover,
+.tel:focus{
+    background-image: url(blacktelegram.svg);
+}
+
+.ok{
+    background-image: url(bxl-ok-ru.svg);
+}
+.ok:hover,
+.ok:focus{
+    background-image: url(blackok-ru.svg);
+}
+
+.vk{
+    background-image: url(bxl-vk.svg);
+}
+.vk:hover,
+.vk:focus{
+    background-image: url(blackvk.svg);
+}

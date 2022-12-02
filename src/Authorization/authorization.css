@@ -1,0 +1,38 @@
+.form-control{
+    border:2px solid black;
+}
+.form-control:focus {
+    border-color: rgba(161, 68, 59, 1);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(161, 68, 59,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(161, 68, 59,.6);
+}
+
+.linkstyle{
+    color:black;
+    font-size: larger;
+}
+.linkstyle:focus,
+.linkstyle:hover
+{
+    color:rgba(161, 68, 59, 1);
+}
+
+  
+
+.btn_reg{
+    border-radius: 0px;
+    font-family: 'Roboto';
+    font-size: medium;
+    color:rgb(0, 0, 0);
+    border: 2px solid rgba(161, 68, 59, 1);
+}
+.btn_reg:hover,.btn_reg:focus
+{
+    color:rgba(161, 68, 59, 1);
+    border: 2px solid rgb(0, 0, 0);
+}
+
+.fontstyle{
+    font-family: 'Roboto';
+}

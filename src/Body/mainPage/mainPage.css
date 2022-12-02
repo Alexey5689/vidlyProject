@@ -1,0 +1,22 @@
+.btn_reg{
+    border-radius:0px;
+    font-family: 'Roboto';
+    font-size: medium;
+    color:rgb(0, 0, 0);
+    border: 2px solid rgba(161, 68, 59, 1);
+}
+.btn_reg:hover,.btn_reg:focus
+{
+    color:rgba(161, 68, 59, 1);
+    border: 2px solid rgb(0, 0, 0);
+}
+
+.bgimg{
+    
+    background-image: url(./Гайдай21920.svg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: auto;
+    height: 100vh;
+
+}
