@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import logo2 from '../Footer/LogoFoot.svg';
 import '../Footer/Footer.css';
 import RegImg from './Clint.svg';
 import './registration.css';
  export default function Registration(){
+
+    const [login, setLogin] = useState("");
+    const [loginErr, setLoginErr]=useState("");
+
+
+    const loginHandler=(e)=>{
+        setLogin(e.target.value);
+        if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
+            setLoginErr("Не может быть меньше 3 и больше 10");
+            
+        }else{
+            setLoginErr("");
+        }
+
+        
+    }
+
+
+
+
+    const hendlerSubmit=(e)=>{
+        e.preventDefault();
+
+    }
+    
+
+    
     return(
         <>
             <header className="row">         
@@ -16,12 +43,18 @@ import './registration.css';
                         <div className="row pl-4 px-xxl-5 px-xl-4 px-lg-3 px-md-0 px-sm-0">
                             <div className="col ">
                                 <h1 className="mb-4 fontstyle" style={{color:"rgba(161, 68, 59, 1)"}}>Регистрация</h1>
-                                <form class="row needs-validation" novalidate>
+                                <form onSubmit={hendlerSubmit} class="row needs-validation" novalidate>
                                     <div className="col-6">
-                                        <input className="form-control form-control-sm" type="text" placeholder="Имя"  style={{ fontFamily:'Open_sans'}}  required></input>
+                                        <input value={login} 
+                                               onChange={e=>loginHandler(e)} 
+                                               name="login" 
+                                               id='login' 
+                                               placeholder="Имя"
+                                               type="text"
+                                               className="form-control form-control-sm"style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
                                     <div className="col-6">
-                                        <input className="form-control form-control-sm" type="text" placeholder="Фамилия"  style={{ fontFamily:'Open_sans'}}  required></input>   
+                                        <input   className="form-control form-control-sm" type="text" placeholder="Фамилия"  style={{ fontFamily:'Open_sans'}}  required></input>   
                                     </div>
                                      <div className="col-12 mt-4 mb-4">
                                         <input className="form-control form-control-sm" type="text" placeholder="Адрес электронной почты"  style={{ fontFamily:'Open_sans'}}  required></input>
@@ -38,8 +71,10 @@ import './registration.css';
                                     <nav className="nav">
                                         <a className="nav-link active linkstyle" aria-current="page" href="/Authorization" style={{ fontFamily:'Open_sans'}}>Вход</a>
                                     </nav>                                    
-                                </form>                                          
+                                </form> 
+                                <div className="col-12 bg-danger text-light">{loginErr}</div>                                         
                             </div>
+                            
                         </div>
                        
                     </div>

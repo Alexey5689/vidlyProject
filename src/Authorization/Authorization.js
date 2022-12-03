@@ -26,7 +26,7 @@ export default function Authorization(){
                                     <div className="col-8  mb-4">
                                         <input className="form-control form-control-sm" type="text" placeholder="Пароль"  style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
-                                    <div class="col-12 ">
+                                    <div className="col-12 ">
                                         <button type="submit" className=" btn btn-sm btn_reg"  style={{ fontFamily:'Open_sans'}}>Войти</button>
                                     </div>
                                     <nav className="nav">
