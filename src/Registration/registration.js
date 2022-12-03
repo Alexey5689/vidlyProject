@@ -4,21 +4,40 @@ import '../Footer/Footer.css';
 import RegImg from './Clint.svg';
 import './registration.css';
  export default function Registration(){
-
+    // Валидация "Имя"
     const [login, setLogin] = useState("");
     const [loginErr, setLoginErr]=useState("");
+    // Валидация "фамилия"
+    const [lastName, setLastName] =useState("");
+    const [LastNameErr, setLastNameErr]=useState("");
+    //Валидация почтовый адрес
+    const [email, setEmail]=useState("");
+    const [emailErr, setEmailErr]=useState("");
 
 
+    // Проверка полей на правильность набора
+    //Имя
     const loginHandler=(e)=>{
         setLogin(e.target.value);
         if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
-            setLoginErr("Не может быть меньше 3 и больше 10");
-            
+            setLoginErr("Имя не может быть меньше 3 и больше 10");           
         }else{
             setLoginErr("");
-        }
+        }        
+    }
+    //Фамиля
+    const LastNameHandler=(e)=>{
+        setLastName(e.target.value);
+        if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
+            setLastNameErr(" Фамилия не может быть меньше 3 и больше 10");           
+        }else{
+            setLastNameErr("");
+        }   
+    }
 
-        
+    //почта
+    const EmailHandler=(e)=>{
+        setEmail(e.target.value);
     }
 
 
@@ -48,16 +67,30 @@ import './registration.css';
                                         <input value={login} 
                                                onChange={e=>loginHandler(e)} 
                                                name="login" 
-                                               id='login' 
+                                               id="login" 
                                                placeholder="Имя"
                                                type="text"
                                                className="form-control form-control-sm"style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
                                     <div className="col-6">
-                                        <input   className="form-control form-control-sm" type="text" placeholder="Фамилия"  style={{ fontFamily:'Open_sans'}}  required></input>   
+                                        <input
+                                            value={lastName} 
+                                            onChange={e=>LastNameHandler(e)}
+                                            name="lastName"
+                                            id="lastName"
+                                            type="text" 
+                                            placeholder="Фамилия" 
+                                            className="form-control form-control-sm"   style={{ fontFamily:'Open_sans'}}  required></input>   
                                     </div>
                                      <div className="col-12 mt-4 mb-4">
-                                        <input className="form-control form-control-sm" type="text" placeholder="Адрес электронной почты"  style={{ fontFamily:'Open_sans'}}  required></input>
+                                        <input 
+                                            value ={email}
+                                            onChange={e=>EmailHandler(e)}
+                                            name="email"
+                                            id="email"
+                                            type="text" 
+                                            placeholder="Адрес электронной почты" 
+                                            className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
                                     <div className="col-6">
                                         <input className="form-control form-control-sm" type="text" placeholder="Пароль"  style={{ fontFamily:'Open_sans'}}  required></input>
@@ -72,7 +105,7 @@ import './registration.css';
                                         <a className="nav-link active linkstyle" aria-current="page" href="/Authorization" style={{ fontFamily:'Open_sans'}}>Вход</a>
                                     </nav>                                    
                                 </form> 
-                                <div className="col-12 bg-danger text-light">{loginErr}</div>                                         
+                                <div className="col-12 bg-danger text-light">{loginErr}{LastNameErr}{emailErr}</div>                                         
                             </div>
                             
                         </div>
