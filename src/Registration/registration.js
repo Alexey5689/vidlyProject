@@ -16,6 +16,9 @@ import './registration.css';
     //валидация пароля
     const [passWord, setPassword] = useState("");
     const [passwordErr, setPasswordErr] = useState("")
+    //проверка пароля
+    const [checkPass, setCheckPass] = ("");
+    const [checkPassErr, setCheckPassErr] = ("");
 
 
     // Проверка полей на правильность набора
@@ -57,6 +60,18 @@ import './registration.css';
         else{
             setPasswordErr("");
         }
+
+    }
+
+    const checkPassHandler =(e)=>{
+        setCheckPass(e.terget.value);
+        let pass = document.getElementById("password");
+        if(checkPass !== pass){
+            setCheckPassErr("Пароли не совпадают");
+        }else{
+            setCheckPassErr("");
+        }
+        
     }
 
 
@@ -123,7 +138,14 @@ import './registration.css';
                                             className="form-control form-control-sm"    style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
                                     <div className="col-6">
-                                        <input className="form-control form-control-sm" type="text" placeholder="Подтверждение"  style={{ fontFamily:'Open_sans'}}  required></input>   
+                                        <input
+                                            value={checkPass}
+                                            onChange={e=>checkPassHandler(e)}
+                                            id ="checkPass"
+                                            name="checkPass"
+                                            type="text" 
+                                            placeholder="Подтверждение"
+                                            className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required></input>   
                                     </div>
                                     <div class="col-12 mt-4">
                                         <button type="submit" className=" btn btn-sm btn_reg"  style={{ fontFamily:'Open_sans'}}>Зарегистрироваться</button>
@@ -132,7 +154,7 @@ import './registration.css';
                                         <a className="nav-link active linkstyle" aria-current="page" href="/Authorization" style={{ fontFamily:'Open_sans'}}>Вход</a>
                                     </nav>                                    
                                 </form> 
-                                <div className="col-12 bg-danger text-light">{loginErr}{LastNameErr}{emailErr}{passwordErr}</div>                                         
+                                <div className="col-12 bg-danger text-light">{loginErr}{LastNameErr}{emailErr}{passwordErr}{checkPassErr}</div>                                         
                             </div>
                             
                         </div>
