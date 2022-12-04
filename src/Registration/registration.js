@@ -13,6 +13,9 @@ import './registration.css';
     //Валидация почтовый адрес
     const [email, setEmail]=useState("");
     const [emailErr, setEmailErr]=useState("");
+    //валидация пароля
+    const [passWord, setPassword] = useState("");
+    const [passwordErr, setPasswordErr] = useState("")
 
 
     // Проверка полей на правильность набора
@@ -29,7 +32,7 @@ import './registration.css';
     const LastNameHandler=(e)=>{
         setLastName(e.target.value);
         if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
-            setLastNameErr(" Фамилия не может быть меньше 3 и больше 10");           
+            setLastNameErr("Фамилия не может быть меньше 3 и больше 10");           
         }else{
             setLastNameErr("");
         }   
@@ -38,6 +41,22 @@ import './registration.css';
     //почта
     const EmailHandler=(e)=>{
         setEmail(e.target.value);
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!re.test(String(e.target.value).toLocaleLowerCase()) && e.target.value !==""){
+            setEmailErr("Некорректный email");
+        }else{
+            setEmailErr('');
+        }
+    }
+    //пароль
+    const PassHandler=(e)=>{
+        setPassword(e.target.value); 
+        if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
+            setPasswordErr("Пароль не может быть меньше 3 и больше 10");
+        }
+        else{
+            setPasswordErr("");
+        }
     }
 
 
@@ -64,7 +83,8 @@ import './registration.css';
                                 <h1 className="mb-4 fontstyle" style={{color:"rgba(161, 68, 59, 1)"}}>Регистрация</h1>
                                 <form onSubmit={hendlerSubmit} class="row needs-validation" novalidate>
                                     <div className="col-6">
-                                        <input value={login} 
+                                        <input 
+                                               value={login} 
                                                onChange={e=>loginHandler(e)} 
                                                name="login" 
                                                id="login" 
@@ -93,7 +113,14 @@ import './registration.css';
                                             className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
                                     <div className="col-6">
-                                        <input className="form-control form-control-sm" type="text" placeholder="Пароль"  style={{ fontFamily:'Open_sans'}}  required></input>
+                                        <input
+                                            value={passWord}
+                                            onChange={e=>PassHandler(e)} 
+                                            id = "password"
+                                            name = "password"
+                                            placeholder ="Пароль"
+                                            type ="password"
+                                            className="form-control form-control-sm"    style={{ fontFamily:'Open_sans'}}  required></input>
                                     </div>
                                     <div className="col-6">
                                         <input className="form-control form-control-sm" type="text" placeholder="Подтверждение"  style={{ fontFamily:'Open_sans'}}  required></input>   
@@ -105,7 +132,7 @@ import './registration.css';
                                         <a className="nav-link active linkstyle" aria-current="page" href="/Authorization" style={{ fontFamily:'Open_sans'}}>Вход</a>
                                     </nav>                                    
                                 </form> 
-                                <div className="col-12 bg-danger text-light">{loginErr}{LastNameErr}{emailErr}</div>                                         
+                                <div className="col-12 bg-danger text-light">{loginErr}{LastNameErr}{emailErr}{passwordErr}</div>                                         
                             </div>
                             
                         </div>
