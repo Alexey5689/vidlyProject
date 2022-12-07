@@ -27,12 +27,12 @@ function App() {
                 <Route path="BestContent" element={<TheBest/>} />
                 <Route path="NewContent" element={<NewContent/>} />
               </Route>
-                <Route path="/Account" element={<Account/>}>
-                  <Route index element={<Video/>} />
-                  <Route path="Subsribes" element={<Subscr/>}/>
-                  <Route path="PlayList" element = {<PlayList/>}/>
-                  <Route path="History" element={<History/>} />
-                </Route>
+              <Route path="/Account" element={<Account/>}>
+                <Route index element={<Video/>} />
+                <Route path="Subsribes" element={<Subscr/>}/>
+                <Route path="PlayList" element = {<PlayList/>}/>
+                <Route path="History" element={<History/>} />
+              </Route>
                 
                 
               <Route path="registration/" element={<Registration/>} />
