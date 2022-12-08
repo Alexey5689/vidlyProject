@@ -4,9 +4,9 @@ import '../Footer/Footer.css';
 import RegImg from './Clint.svg';
 import './registration.css';
 import {Link} from 'react-router-dom';
+import axios from '..//api/axios.js';
 
 
-const hostUrl = 'api/video';
 function Form (){
     // Валидация "Имя"
     const [login, setLogin] = useState("");
@@ -24,14 +24,24 @@ function Form (){
     const [checkPass, setCheckPass] = useState("");
     const [checkPassErr, setCheckPassErr] = useState("");
 
+    const [errMsg, setErrMsg] = useState('');
+    const [success, setSuccess] = useState(false);
+
+
+    const user_regex = /^[а-яА-ЯёЁa-zA-Z0-9]{3,23}$/;
+    const REGISTER_URL = '/register';
+    // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+    // const REGISTER_URL = '/register';
+
 
      // Проверка полей на правильность набора
     //Имя
     const LoginHandler=(e)=>{
         setLogin(e.target.value);
-        //console.log(login);
-        if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
-            setLoginErr("Имя не может быть меньше 3 и больше 10");           
+        //console.log(login);(e.target.value.length < 3 || e.target.value.length > 10)
+         //const user_regex = /^[A-z][A-z0-9-_]{3,23}$/u;
+        if(!user_regex.test(String(e.target.value).toLocaleLowerCase()) && e.target.value !==""){
+            setLoginErr("Ошибка заполнения поля");           
         }else{
             setLoginErr("");
         }        
@@ -39,9 +49,10 @@ function Form (){
     //Фамиля
     const LastNameHandler=(e)=>{
         setLastName(e.target.value);
-        //console.log(lastName);
-        if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
-            setLastNameErr("Фамилия не может быть меньше 3 и больше 10");           
+        //const user_regex = /^[A-z][A-z0-9-_]{3,23}$/;
+        //console.log(lastName);e.target.value.length < 3 || e.target.value.length > 10
+        if(!user_regex.test(String(e.target.value).toLocaleLowerCase()) && e.target.value !==""){
+            setLastNameErr("Ошибка заполнения поля");           
         }else{
             setLastNameErr("");
         }   
@@ -61,9 +72,10 @@ function Form (){
     //пароль
     const PassHandler=(e)=>{
         setPassword(e.target.value); 
-        //console.log(passWord);
-        if((e.target.value.length < 3 || e.target.value.length > 10) && e.target.value !==""){
-            setPasswordErr("Пароль не может быть меньше 3 и больше 10");
+        const passwrd_regex = /^(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ])(?=.*[0-9])(?=.*[!@#$%_]).{8,24}$/;
+        //console.log(passWord);(e.target.value.length < 3 || e.target.value.length > 10)
+        if(!passwrd_regex.test(String(e.target.value)) && e.target.value !==""){
+            setPasswordErr("Слишком простой пароль");
         }
         else{
             setPasswordErr("");
@@ -89,27 +101,53 @@ function Form (){
     const userEmailRef = useRef();
     const userPassRef = useRef();
 
-    const hendlerSubmit=(e)=>{
-        // e.preventDefault();
+    const hendlerSubmit = async (e) =>{
+        e.preventDefault();
         
-       let log = userNameRef.current.value;
-       let lastName = userLastNameRef.current.value;
-       const userInfo={
-        name: log,
-        lastName: lastName,
-       }
+        let userLog = userNameRef.current.value;
+        let userLastName = userLastNameRef.current.value;
+        let userEmail = userEmailRef.current.value;
+        let userPassword =userPassRef.current.value;
 
-       fetch(hostUrl,{
-        method:'POST',
-        headers:{
-          'Accept':'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userInfo),
-        });
-       
-        
+        const userInfo={
+            name: userLog,
+            lastName: userLastName,
+            email: userEmail,
+            password: userPassword
+        }
+        // fetch(hostUrl,{
+        //     method:'POST',
+        //     headers:{
+        //     'Accept':'application/json',
+        //     'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(userInfo),
+        // });
+            
+        try{
+            const response = await axios.post(REGISTER_URL, 
+                JSON.stringify(userInfo),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+            console.log(response?.data);
+            console.log(response?.accessToken);
+            console.log(JSON.stringify(response))
+            setSuccess(true);
+            setLogin('');
+            setLastName('');
+            setEmail('');
+            setPassword('');
+
+        }catch(err){
+            if(!err?.response){
+                setErrMsg('Нет связи с сервером');
+            }
+        }    
     }
+        
 
 
 
@@ -119,20 +157,24 @@ function Form (){
         <>
             <form onSubmit={hendlerSubmit} class="row needs-validation" novalidate>
                 <div className="col-6">
-                    <input 
+                    <input
+                        
                         value={login} 
                         onChange={e=>LoginHandler(e)} 
                         name="login" 
                         id="login" 
+                        autoComplete="off"
                         placeholder="Имя"
                         type="text"
+                        aria-describedby="userName" 
                         ref={userNameRef}
                         className="form-control form-control-sm"style={{ fontFamily:'Open_sans'}}  required>
                     </input>
-                    <div className="col-12  text-danger">{loginErr}</div>                                               
+                    <p id="userName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{loginErr}</p>                                               
                 </div>
                 <div className="col-6">
                     <input
+                        
                         value={lastName} 
                         onChange={e=>LastNameHandler(e)}
                         ref={userLastNameRef}
@@ -146,6 +188,7 @@ function Form (){
                 </div>
                 <div className="col-12 mt-4 mb-4">
                     <input 
+                        
                         value ={email}
                         onChange={e=>EmailHandler(e)}
                         ref={userEmailRef}
@@ -159,6 +202,7 @@ function Form (){
                 </div>
                 <div className="col-6">
                     <input
+                        
                         value={passWord}
                         onChange={e=>PassHandler(e)}
                         ref={userPassRef} 
@@ -173,6 +217,7 @@ function Form (){
                 <div className="col-6">
                     
                     <input
+                        
                         value={checkPass}
                         onChange={e=>CheckPassHandler(e)}
                         id ="checkPass"
@@ -184,8 +229,8 @@ function Form (){
                     <div className="col-12  text-danger">{checkPassErr}</div>  
                 </div>
                 <div class="col-12 mt-4">
-                    <button  
-                                                                
+                    <button 
+
                         type="submit" 
                         className=" btn btn-sm btn_reg"  
                         style={{ fontFamily:'Open_sans'}}>Зарегистрироваться
