@@ -173,36 +173,38 @@ function Form (){
                     <p id="userName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{loginErr}</p>                                               
                 </div>
                 <div className="col-6">
-                    <input
-                        
+                    <input  
+                        autoComplete="off"                    
                         value={lastName} 
                         onChange={e=>LastNameHandler(e)}
                         ref={userLastNameRef}
                         name="lastName"
                         id="lastName"
                         type="text" 
-                        placeholder="Фамилия" 
+                        placeholder="Фамилия"
+                        aria-describedby="userLastName" 
                         className="form-control form-control-sm"   style={{ fontFamily:'Open_sans'}}  required>
                     </input> 
-                    <div className="col-12  text-danger">{LastNameErr}</div>    
+                    <p id="userLastName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{LastNameErr}</p>                     
                 </div>
                 <div className="col-12 mt-4 mb-4">
-                    <input 
-                        
+                    <input  
+                        autoComplete="off"                       
                         value ={email}
                         onChange={e=>EmailHandler(e)}
                         ref={userEmailRef}
                         name="email"
                         id="email"
-                        type="text" 
+                        type="text"
+                        aria-describedby="userEmail" 
                         placeholder="Адрес электронной почты" 
                         className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required>
                     </input>
-                    <div className="col-12  text-danger">{emailErr}</div>  
+                    <p id="userLastName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{emailErr}</p> 
                 </div>
                 <div className="col-6">
                     <input
-                        
+                        autoComplete="off" 
                         value={passWord}
                         onChange={e=>PassHandler(e)}
                         ref={userPassRef} 
@@ -210,23 +212,26 @@ function Form (){
                         name = "password"
                         placeholder ="Пароль"
                         type ="password"
+                        aria-describedby="userPassword" 
                         className="form-control form-control-sm"    style={{ fontFamily:'Open_sans'}}  required>
                     </input>
-                    <div className="col-12  text-danger">{passwordErr}</div>  
+                    <p id="userPassword"  className="col-12  text-danger" style={{fontSize:"1em"}}>{passwordErr}</p>  
                 </div>
                 <div className="col-6">
                     
                     <input
-                        
+                        autoComplete="off"
                         value={checkPass}
                         onChange={e=>CheckPassHandler(e)}
                         id ="checkPass"
                         name="checkPass"
                         type="text" 
+                        aria-describedby="passCheck"
                         placeholder="Подтверждение"
                         className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required>
                     </input> 
-                    <div className="col-12  text-danger">{checkPassErr}</div>  
+                    <p id="userPassword"  className="col-12  text-danger" style={{fontSize:"1em"}}>{checkPassErr}</p>
+                     
                 </div>
                 <div class="col-12 mt-4">
                     <button 
