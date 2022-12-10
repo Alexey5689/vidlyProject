@@ -100,6 +100,7 @@ function Form (){
     const userLastNameRef = useRef();
     const userEmailRef = useRef();
     const userPassRef = useRef();
+    const errRef = useRef();
 
     const hendlerSubmit = async (e) =>{
         e.preventDefault();
@@ -131,20 +132,28 @@ function Form (){
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
-            );
-            console.log(response?.data);
-            console.log(response?.accessToken);
+              
+            ); 
+            // console.log(response?.data);
+            // console.log(response?.accessToken);
             console.log(JSON.stringify(response))
             setSuccess(true);
             setLogin('');
             setLastName('');
             setEmail('');
             setPassword('');
+            setCheckPass('');
 
         }catch(err){
             if(!err?.response){
                 setErrMsg('Нет связи с сервером');
+            }else if(err.response?.status === 409){
+                setErrMsg('Пользователь с таким именем уже существует');
+            }else{
+                setErrMsg('Ошибка регистрации');
             }
+            errRef.current.focus();
+            
         }    
     }
         
@@ -157,8 +166,8 @@ function Form (){
         <>
             <form onSubmit={hendlerSubmit} class="row needs-validation" novalidate>
                 <div className="col-6">
-                    <input
-                        
+                    <input      
+                                  
                         value={login} 
                         onChange={e=>LoginHandler(e)} 
                         name="login" 
@@ -229,10 +238,10 @@ function Form (){
                         aria-describedby="passCheck"
                         placeholder="Подтверждение"
                         className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required>
-                    </input> 
+                    </input>                     
                     <p id="userPassword"  className="col-12  text-danger" style={{fontSize:"1em"}}>{checkPassErr}</p>
-                     
-                </div>
+
+                </div>               
                 <div class="col-12 mt-4">
                     <button 
 
@@ -245,7 +254,7 @@ function Form (){
                     </nav>   
                 </div>                
             </form>
-            
+            <p ref={errRef} className="col-12  text-danger" aria-live="assertive">{errMsg}</p>
         </>
     );
 }
