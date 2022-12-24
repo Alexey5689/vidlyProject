@@ -7,6 +7,8 @@ import {Link} from 'react-router-dom';
 import axios from '..//api/axios.js';
 
 
+
+
 function Form (){
     // Валидация "Имя"
     const [login, setLogin] = useState("");
@@ -100,6 +102,7 @@ function Form (){
     const userLastNameRef = useRef();
     const userEmailRef = useRef();
     const userPassRef = useRef();
+    const errRef = useRef();
 
     const hendlerSubmit = async (e) =>{
         e.preventDefault();
@@ -124,33 +127,39 @@ function Form (){
         //     body: JSON.stringify(userInfo),
         // });
 
-       
-            
+
+
+
         try{
-            const response = await axios.post(REGISTER_URL, JSON.stringify(userInfo),
+
+            const response = await axios.post(REGISTER_URL, 
+                JSON.stringify(userInfo),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
-            );
-            console.log(response?.data);
-            console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
+              
+            ); 
+            // console.log(response?.data);
+            // console.log(response?.accessToken);
+            //console.log(JSON.stringify(response))
             setSuccess(true);
             setLogin('');
             setLastName('');
             setEmail('');
             setPassword('');
+            setCheckPass('');
 
-        }
-        catch(err){
+        }catch(err){
             if(!err?.response){
                 setErrMsg('Нет связи с сервером');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
-            } else {
+            }else if(err.response?.status === 409){
+                setErrMsg('Пользователь с таким именем уже существует');
+            }else{
                 setErrMsg('Ошибка регистрации');
             }
+            errRef.current.focus();
+            
         }    
     }
         
@@ -161,7 +170,7 @@ function Form (){
 
     return(
         <>
-            {success ? (
+             {success ? (
                 <section>
                     <h1>Success!</h1>
                     <p>
@@ -171,11 +180,12 @@ function Form (){
                     </p>
                 </section>
             ) : (
-     
-            <form onSubmit={hendlerSubmit}  className="row needs-validation" novalidate>
+
+          
+            <form onSubmit={hendlerSubmit} class="row needs-validation" novalidate>
                 <div className="col-6">
-                    <input
-                        
+                    <input      
+                                  
                         value={login} 
                         onChange={e=>LoginHandler(e)} 
                         name="login" 
@@ -190,36 +200,38 @@ function Form (){
                     <p id="userName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{loginErr}</p>                                               
                 </div>
                 <div className="col-6">
-                    <input
-
+                    <input  
+                        autoComplete="off"                    
                         value={lastName} 
                         onChange={e=>LastNameHandler(e)}
                         ref={userLastNameRef}
                         name="lastName"
                         id="lastName"
                         type="text" 
-                        placeholder="Фамилия" 
+                        placeholder="Фамилия"
+                        aria-describedby="userLastName" 
                         className="form-control form-control-sm"   style={{ fontFamily:'Open_sans'}}  required>
                     </input> 
-                    <div className="col-12  text-danger">{LastNameErr}</div>    
+                    <p id="userLastName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{LastNameErr}</p>                     
                 </div>
                 <div className="col-12 mt-4 mb-4">
-                    <input 
-                        
+                    <input  
+                        autoComplete="off"                       
                         value ={email}
                         onChange={e=>EmailHandler(e)}
                         ref={userEmailRef}
                         name="email"
                         id="email"
-                        type="text" 
+                        type="text"
+                        aria-describedby="userEmail" 
                         placeholder="Адрес электронной почты" 
                         className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required>
                     </input>
-                    <div className="col-12  text-danger">{emailErr}</div>  
+                    <p id="userLastName"  className="col-12  text-danger" style={{fontSize:"1em"}}>{emailErr}</p> 
                 </div>
                 <div className="col-6">
                     <input
-                        
+                        autoComplete="off" 
                         value={passWord}
                         onChange={e=>PassHandler(e)}
                         ref={userPassRef} 
@@ -227,27 +239,30 @@ function Form (){
                         name = "password"
                         placeholder ="Пароль"
                         type ="password"
+                        aria-describedby="userPassword" 
                         className="form-control form-control-sm"    style={{ fontFamily:'Open_sans'}}  required>
                     </input>
-                    <div className="col-12  text-danger">{passwordErr}</div>  
+                    <p id="userPassword"  className="col-12  text-danger" style={{fontSize:"1em"}}>{passwordErr}</p>  
                 </div>
                 <div className="col-6">
                     
                     <input
-                        
+                        autoComplete="off"
                         value={checkPass}
                         onChange={e=>CheckPassHandler(e)}
                         id ="checkPass"
                         name="checkPass"
                         type="text" 
+                        aria-describedby="passCheck"
                         placeholder="Подтверждение"
                         className="form-control form-control-sm" style={{ fontFamily:'Open_sans'}}  required>
-                    </input> 
-                    <div className="col-12  text-danger">{checkPassErr}</div>  
-                </div>
+                    </input>                     
+                    <p id="userPassword"  className="col-12  text-danger" style={{fontSize:"1em"}}>{checkPassErr}</p>
+
+                </div>               
                 <div class="col-12 mt-4">
                     <button 
-                        
+
                         type="submit" 
                         className=" btn btn-sm btn_reg"  
                         style={{ fontFamily:'Open_sans'}}>Зарегистрироваться
@@ -255,15 +270,19 @@ function Form (){
                     <nav className="nav">
                         <Link className="nav-link active linkstyle" aria-current="page" to="/authorization" style={{ fontFamily:'Open_sans'}}>Вход</Link>
                     </nav>   
-                </div> 
-                
-                <div className="col-12  text-danger">{errMsg}</div>          
+                </div>                
             </form>
-            
+
             )}
+            <p ref={errRef} className="col-12  text-danger" aria-live="assertive">{errMsg}</p>  
         </>
     );
 }
+
+
+
+
+
 
  export default function Registration(){     
     return(
