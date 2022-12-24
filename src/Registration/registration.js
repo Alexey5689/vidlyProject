@@ -123,10 +123,11 @@ function Form (){
         //     },
         //     body: JSON.stringify(userInfo),
         // });
+
+       
             
         try{
-            const response = await axios.post(REGISTER_URL, 
-                JSON.stringify(userInfo),
+            const response = await axios.post(REGISTER_URL, JSON.stringify(userInfo),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -141,9 +142,14 @@ function Form (){
             setEmail('');
             setPassword('');
 
-        }catch(err){
+        }
+        catch(err){
             if(!err?.response){
                 setErrMsg('Нет связи с сервером');
+            } else if (err.response?.status === 409) {
+                setErrMsg('Username Taken');
+            } else {
+                setErrMsg('Ошибка регистрации');
             }
         }    
     }
@@ -155,7 +161,18 @@ function Form (){
 
     return(
         <>
-            <form onSubmit={hendlerSubmit} class="row needs-validation" novalidate>
+            {success ? (
+                <section>
+                    <h1>Success!</h1>
+                    <p>
+                        <nav className="nav">
+                            <Link className="nav-link active linkstyle" aria-current="page" to="/authorization" style={{ fontFamily:'Open_sans'}}>Вход</Link>
+                        </nav> 
+                    </p>
+                </section>
+            ) : (
+     
+            <form onSubmit={hendlerSubmit}  className="row needs-validation" novalidate>
                 <div className="col-6">
                     <input
                         
@@ -174,7 +191,7 @@ function Form (){
                 </div>
                 <div className="col-6">
                     <input
-                        
+
                         value={lastName} 
                         onChange={e=>LastNameHandler(e)}
                         ref={userLastNameRef}
@@ -230,7 +247,7 @@ function Form (){
                 </div>
                 <div class="col-12 mt-4">
                     <button 
-
+                        
                         type="submit" 
                         className=" btn btn-sm btn_reg"  
                         style={{ fontFamily:'Open_sans'}}>Зарегистрироваться
@@ -238,9 +255,12 @@ function Form (){
                     <nav className="nav">
                         <Link className="nav-link active linkstyle" aria-current="page" to="/authorization" style={{ fontFamily:'Open_sans'}}>Вход</Link>
                     </nav>   
-                </div>                
+                </div> 
+                
+                <div className="col-12  text-danger">{errMsg}</div>          
             </form>
             
+            )}
         </>
     );
 }
