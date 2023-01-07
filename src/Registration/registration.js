@@ -4,7 +4,7 @@ import '../Footer/Footer.css';
 import RegImg from './Clint.svg';
 import './registration.css';
 import {Link} from 'react-router-dom';
-import axios from '..//api/axios.js';
+import axios from '../api/axios';
 
 
 
@@ -31,7 +31,7 @@ function Form (){
 
 
     const user_regex = /^[а-яА-ЯёЁa-zA-Z0-9]{3,23}$/;
-    const REGISTER_URL = '/register';
+    const REGISTER_URL = 'registration';
     // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
     // const REGISTER_URL = '/register';
 
@@ -102,7 +102,12 @@ function Form (){
     const userLastNameRef = useRef();
     const userEmailRef = useRef();
     const userPassRef = useRef();
-    const errRef = useRef();
+    const errRef = useRef(); 
+   
+
+
+
+
 
     const hendlerSubmit = async (e) =>{
         e.preventDefault();
@@ -118,37 +123,32 @@ function Form (){
             email: userEmail,
             password: userPassword
         }
-        // fetch(hostUrl,{
-        //     method:'POST',
-        //     headers:{
-        //     'Accept':'application/json',
-        //     'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(userInfo),
-        // });
-
-
-
-
+      
+        
         try{
-
-            const response = await axios.post(REGISTER_URL, 
-                JSON.stringify(userInfo),
+            const response = await axios.post(REGISTER_URL, JSON.stringify(userInfo),
                 {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json',
+                                'Accept':'application/json',
+                                'Access-Control-Allow-Origin': '*',
+                            
+                            },
                     withCredentials: true
                 }
-              
-            ); 
-            // console.log(response?.data);
-            // console.log(response?.accessToken);
-            //console.log(JSON.stringify(response))
-            setSuccess(true);
-            setLogin('');
-            setLastName('');
-            setEmail('');
-            setPassword('');
-            setCheckPass('');
+
+            );
+            if(response.data.status === 200){
+                setSuccess(true);
+                setLogin('');
+                setLastName('');
+                setEmail('');
+                setPassword('');
+                setCheckPass('');
+                console.log(response?.data);
+                console.log(userInfo);
+                console.log(response?.accessToken);
+                console.log(JSON.stringify(response))
+            }
 
         }catch(err){
             if(!err?.response){
@@ -159,23 +159,24 @@ function Form (){
                 setErrMsg('Ошибка регистрации');
             }
             errRef.current.focus();
-            
-        }    
-    }
-        
+            // console.log(err?.data);
+            // console.log(userInfo);
+            // console.log(err?.accessToken);
+            // console.log(JSON.stringify(err))
 
+        }
 
-
-
-
+      
+         
+    }    
     return(
         <>
              {success ? (
                 <section>
-                    <h1>Success!</h1>
+                    <h1>Вы успешно прошли регистрацию</h1>
                     <p>
                         <nav className="nav">
-                            <Link className="nav-link active linkstyle" aria-current="page" to="/authorization" style={{ fontFamily:'Open_sans'}}>Вход</Link>
+                            <Link className="nav-link active linkstyle" aria-current="page" to="/authorization" style={{ fontFamily:'Open_sans', textDecoration:'underline'}}>Вход</Link>
                         </nav> 
                     </p>
                 </section>
@@ -188,8 +189,8 @@ function Form (){
                                   
                         value={login} 
                         onChange={e=>LoginHandler(e)} 
-                        name="login" 
-                        id="login" 
+                        name="name" 
+                        id="name" 
                         autoComplete="off"
                         placeholder="Имя"
                         type="text"
@@ -333,3 +334,71 @@ function Form (){
         </>
     );
  }
+
+
+
+
+
+
+
+   // fetch(hostUrl,{
+        //     method:'POST',
+        //     headers:{
+        //     'Accept':'application/json',
+        //     'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(userInfo),
+        // });
+
+
+        
+            // const response = await fetch(`${NET.APP_URL}/registration`,{
+            //     method:'POST',
+            //     headers:{
+            //     'Accept':'application/json',
+            //     'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(userInfo),
+            // });
+
+  // if(response.status === 200){ 
+            //     setSuccess(true);
+            //     setLogin('');
+            //     setLastName('');
+            //     setEmail('');
+            //     setPassword('');
+            //     setCheckPass('');
+            // }
+
+             // try{   
+        // }catch(err){
+        //     if(!err?.response){
+        //         setErrMsg('Нет связи с сервером');
+        //     }else if(err.response?.status === 409){
+        //         setErrMsg('Пользователь с таким именем уже существует');
+        //     }else{
+        //         setErrMsg('Ошибка регистрации');
+        //     }
+        //     errRef.current.focus();
+            
+        // }  
+ // const response = await axios.post(REGISTER_URL, userInfo,
+            // {
+            //     headers: { 'Content-Type': 'application/json',
+            //                 'Accept':'application/json', },
+            //     withCredentials: true
+            // }              
+          //  );  
+        // if(response.data.status === 200){ 
+        //     setSuccess(true);
+        //     setLogin('');
+        //     setLastName('');
+        //     setEmail('');
+        //     setPassword('');
+        //     setCheckPass('');
+        // }
+       
+        // console.log(response?.data);
+        // console.log(userInfo);
+        // console.log(response?.accessToken);
+        // console.log(JSON.stringify(response))
