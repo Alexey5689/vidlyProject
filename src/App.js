@@ -13,6 +13,10 @@ import Video from "./Body/Account/AccountPages/Video.js";
 import Subscr from "./Body/Account/AccountPages/Subscr.js";
 import History from "./Body/Account/AccountPages/History.js";
 import PlayList from "./Body/Account/AccountPages/PlayList.js";
+import Testapi from "./Testapi.js";
+
+
+
 function App() {
   return (
   
@@ -34,7 +38,7 @@ function App() {
                 <Route path="History" element={<History/>} />
               </Route>
                 
-                
+              <Route path="testapi/" element={<Testapi/>} />
               <Route path="registration/" element={<Registration/>} />
               <Route path="authorization/" element={<Authorization/>} />
               <Route path="*" element={<NotFound/>}/>

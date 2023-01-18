@@ -4,8 +4,9 @@ import '../Footer/Footer.css';
 import RegImg from './Clint.svg';
 import './registration.css';
 import {Link} from 'react-router-dom';
-import axios from '../api/axios';
-
+import axios from '../api/axios.js';
+//хэширование
+import md5 from "md5";
 
 
 
@@ -115,60 +116,132 @@ function Form (){
         let userLog = userNameRef.current.value;
         let userLastName = userLastNameRef.current.value;
         let userEmail = userEmailRef.current.value;
-        let userPassword =userPassRef.current.value;
+
+        let userPassword = userPassRef.current.value;
 
         const userInfo={
             name: userLog,
             lastName: userLastName,
             email: userEmail,
-            password: userPassword
-        }
-      
-        
-        try{
-            const response = await axios.post(REGISTER_URL, JSON.stringify(userInfo),
-                {
-                    headers: { 'Content-Type': 'application/json',
-                                'Accept':'application/json',
-                                'Access-Control-Allow-Origin': '*',
-                            
-                            },
-                    withCredentials: true
+            //хэширование
+            password: md5(userPassword),
+        };
+        // await axios
+        //     .post( userInfo)
+        //     .then((response)=>{
+        //         if(response === 200){
+        //             setErrMsg("Регистрация прошла успешно");
+        //             setSuccess(true);
+        //             setLogin('');
+        //             setLastName('');
+        //             setEmail('');
+        //             setPassword('');
+        //             setCheckPass('');
+        //             console.log(response.data);
+        //             console.log(response.status);
+        //             console.log(response.statusText);
+        //             console.log(response.headers);
+        //             console.log(response.config);
+        //         }
+        //     }).catch(function (error){
+        //         if(error.response){
+        //             setErrMsg('Нет связи с сервером');                    
+        //             if(error.response.status === 409){
+        //                setErrMsg('Пользователь с таким именем уже существует'); 
+        //             }else{
+        //                 setErrMsg('Ошибка регистрации');
+        //             }
+        //             console.log(error.response.data);
+        //             console.log(error.response.status);
+        //             console.log(error.response.headers);
+        //         }else if(error.request){
+        //             console.log(error.request);
+        //         }else{
+        //             console.log('Error', error.message);
+        //         }
+        //         console.log(error.config);
+        //     }); 
+            
+            
+            try{
+                const response = await axios.post(REGISTER_URL,userInfo, 
+                    {
+                        headers: { 'Content-Type': 'application/json',
+                                    'Accept':'application/json', 
+                                    //'Access-Control-Allow-Credentials':false,
+                                },
+                        withCredentials:true, 
+                    }
+                );
+                    
+                    if(response === 200){
+                        setErrMsg("Регистрация прошла успешно");
+                        setSuccess(true);
+                        setLogin('');
+                        setLastName('');
+                        setEmail('');
+                        setPassword('');
+                        setCheckPass('');
+                        console.log(response.data);
+                        console.log(response.status);
+                        console.log(response.statusText);
+                        console.log(response.headers);
+                        console.log(response.config);
+                    };
+                    console.log(response)
+
+            }catch(error){
+                // if(error.response){
+                //     setErrMsg('Нет связи с сервером');                    
+                //     if(error.response.status === 409){
+                //        setErrMsg('Пользователь с таким именем уже существует'); 
+                //     }else{
+                //         setErrMsg('Ошибка регистрации');
+                //     }
+                //     console.log(error.response.data);
+                //     console.log(error.response.status);
+                //     console.log(error.response.headers);
+                // }else if(error.request){
+                //     console.log(error.request);
+                // }else{
+                //     console.log('Error', error.message);
+                // }
+                // console.log(error.config);
+                if(!error?.response){
+                    setErrMsg('Нет связи с сервером');
+                    // console.log(error.response.data);
+                    // console.log(error.response.status);
+                    // console.log(error.response.headers);
+                    //console.log(error.config);
+
                 }
+                else if(error.response?.status === 409){
+                    setErrMsg('Пользователь с таким именем уже существует');
+                }
+                else if(error.request){
+                    console.log(error.request);
+                }else{
+                    setErrMsg('Ошибка регистрации');
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+                // console.log(error.data);
+                //console.log(error.status);
+                // console.log(error.headers);
+                // console.log(error.message);
 
-            );
-            if(response.data.status === 200){
-                setSuccess(true);
-                setLogin('');
-                setLastName('');
-                setEmail('');
-                setPassword('');
-                setCheckPass('');
-                console.log(response?.data);
-                console.log(userInfo);
-                console.log(response?.accessToken);
-                console.log(JSON.stringify(response))
             }
-
-        }catch(err){
-            if(!err?.response){
-                setErrMsg('Нет связи с сервером');
-            }else if(err.response?.status === 409){
-                setErrMsg('Пользователь с таким именем уже существует');
-            }else{
-                setErrMsg('Ошибка регистрации');
-            }
-            errRef.current.focus();
-            // console.log(err?.data);
-            // console.log(userInfo);
-            // console.log(err?.accessToken);
-            // console.log(JSON.stringify(err))
-
-        }
+    }           
+  
+        
+       
+       
+        
 
       
          
-    }    
+    
+
     return(
         <>
              {success ? (
@@ -402,3 +475,44 @@ function Form (){
         // console.log(userInfo);
         // console.log(response?.accessToken);
         // console.log(JSON.stringify(response))
+
+
+
+         // try{
+        //     const response = await axios.post(REGISTER_URL, JSON.stringify(userInfo),
+        //         {
+                    
+        //             headers: { 'Content-Type': 'application/json',
+        //                         'Accept':'application/json', 
+                                                 
+        //                     },
+        //             withCredentials: true,
+        //         }
+
+        //     );
+
+        //     if(response.data.status === 200){
+        //         setSuccess(true);
+        //         setLogin('');
+        //         setLastName('');
+        //         setEmail('');
+        //         setPassword('');
+        //         setCheckPass('');
+        //         console.log(response?.data);
+        //         console.log(userInfo);
+        //         console.log(response?.accessToken);
+        //         console.log(JSON.stringify(response))
+        //     }
+
+        // }catch(err){
+        //     if(!err?.response){
+        //         setErrMsg('Нет связи с сервером');
+        //     }else if(err.response?.status === 409){
+        //         setErrMsg('Пользователь с таким именем уже существует');
+        //     }else{
+        //         setErrMsg('Ошибка регистрации');
+        //     }
+        //     errRef.current.focus();
+           
+
+        // }
